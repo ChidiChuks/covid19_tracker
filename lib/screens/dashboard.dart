@@ -10,7 +10,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  List<Covid19Dashboard> list = [];
+  Covid19Dashboard data;
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     // List<Covid19Dashboard> _list;
 
-    list = getData();
+    data = getData();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +35,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: ListView.builder(itemBuilder: (context, index){
         
         return ListTile(
-          title: Text('${list.countries[index]}'),
+          title: Text('${data.countries[index].country}'),
         );
       }),
     );
@@ -43,9 +43,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   getData() async {
     Networking network = Networking();
-    List<Covid19Dashboard> result = await network.getDashboardData();
+    Covid19Dashboard result = await network.getDashboardData();
     setState(() {
-      list = result;
+      data = result;
     });
     // return result;
   }
