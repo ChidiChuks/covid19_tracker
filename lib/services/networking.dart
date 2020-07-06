@@ -6,17 +6,16 @@ import 'package:covid19_tracker/model/serializers.dart';
 
 class Networking {
   
-   Future<List<Covid19Dashboard>> getDashboardData() async {
+   Future<Covid19Dashboard> getDashboardData() async {
 
-    List<Covid19Dashboard> _dashboardResult = [];
+    Covid19Dashboard _dashboardResult;
     var url = 'https://doh.saal.ai/api/live';
 
     var response = await http.get(url);
 
     if(response.statusCode == 200) {
-      List<dynamic> list = jsonDecode(response.body);
-      _dashboardResult.addAll(list.map(
-        (e) => serializers.serializeWith(Covid19Dashboard.serializer, e)));
+      dynamic data = jsonDecode(response.body);
+      _dashboardResult = serializers.deserializeWith(Covid19Dashboard.serializer, data);
     } else{
       throw Exception('connection error');
     }
