@@ -1,8 +1,12 @@
+import 'package:country_pickers/country.dart';
+import 'package:country_pickers/country_pickers.dart';
 import 'package:covid19_tracker/model/covid19_dashboard.dart';
 import 'package:covid19_tracker/services/networking.dart';
 import 'package:flutter/material.dart';
 
-import 'package:country_code_picker/country_code_picker.dart';
+// import 'package:country_code_picker/country_code_picker.dart';
+import 'package:country_pickers/country_pickers.dart';
+import 'package:country_pickers/country.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key key}) : super(key: key);
@@ -37,19 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: ListView.builder(itemBuilder: (context, index){
         
         return ListTile(
-          leading: CountryCodePicker(
-            onChanged: print,
-            // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-            initialSelection: data.countries[index].countryCode,
-            // favorite: ['+39','FR'],
-            // optional. Shows only country name and flag
-            showCountryOnly: false,
-            showFlag: true,
-            // optional. Shows only country name and flag when popup is closed.
-            // showOnlyCountryWhenClosed: false,
-            // optional. aligns the flag and the Text left
-            // alignLeft: false,
-          ),
+          leading: CountryPickerUtils.getDefaultFlagImage(Country(isoCode: data.countries[index].countryCode)),
           
           // Text('${data.countries[index].countryCode}'),
           title: Text('${data.countries[index].country}'),
