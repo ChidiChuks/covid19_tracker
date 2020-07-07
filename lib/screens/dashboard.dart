@@ -34,11 +34,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     // data = getData();
 
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('COVID-19 Dashboard'),
       ),
-      body: ListView.builder(itemBuilder: (context, index){
+      body: ListView.builder(
+        
+        itemCount: data.countries.length,
+        itemBuilder: (context, index){
         
         return ListTile(
           leading: CountryPickerUtils.getDefaultFlagImage(Country(isoCode: data.countries[index].countryCode)),
