@@ -40,7 +40,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         title: Text('COVID-19 Dashboard'),
       ),
-      body: ListView.builder(
+      body: data == null ? CircularProgressIndicator() : ListView.builder(
         
         itemCount: data.countries.length,
         itemBuilder: (context, index){
