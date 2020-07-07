@@ -64,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: <Widget>[
                     Column(
                       children: <Widget>[
-                        Text('Rank: $index', style: TextStyle(color: Colors.orangeAccent),),
+                        Text('Rank: ${index + 1}', style: TextStyle(color: Colors.orangeAccent),),
                         SizedBox(height: 10,),
                         Text('Confirmed: ${data.countries[index].confirmed}'),
                         SizedBox(height: 10,),
