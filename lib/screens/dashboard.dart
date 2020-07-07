@@ -57,16 +57,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
             trailing: Text('${data.countries[index].confirmed}'),
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Column(
                       children: <Widget>[
+                        Text('Rank: $index', style: TextStyle(color: Colors.orangeAccent),),
+                        SizedBox(height: 10,),
                         Text('Confirmed: ${data.countries[index].confirmed}'),
-                        SizedBox(height: 5,),
-                        Text('Recovered: ${data.countries[index].recovered}'),
-                        SizedBox(height: 5,),
-                        Text('Deaths: ${data.countries[index].deaths}'),
+                        SizedBox(height: 10,),
+                        Text('Recovered: ${data.countries[index].recovered}', style: TextStyle(color: Colors.green),),
+                        SizedBox(height: 10,),
+                        Text('Deaths: ${data.countries[index].deaths}', style: TextStyle(color: Colors.red),),
+                        SizedBox(height: 10,),
                       ],
                     ),
                   ],
