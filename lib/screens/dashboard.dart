@@ -52,35 +52,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
               slivers: <Widget>[
                 SliverGrid(
                   delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(20.0),
-                        elevation: 10, 
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Text(
-                              'Title', 
-                              style: TextStyle(
-                                color: Colors.black, 
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              '1000',
-                              style: TextStyle(
-                                color: Colors.black, 
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    buildSummaryCard(
+                      text: 'Confirmed', 
+                      color: Colors.black54, 
+                      count: data.confirmed,
+                    ),
+                    buildSummaryCard(
+                      text: 'Active', 
+                      color: Colors.blue, 
+                      count: data.active,
+                    ),
+                    buildSummaryCard(
+                      text: 'Recovered', 
+                      color: Colors.green, 
+                      count: data.recovered,
+                    ),
+                    buildSummaryCard(
+                      text: 'Deaths', 
+                      color: Colors.red, 
+                      count: data.deaths,
                     ),
                   ]), 
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.3,
+                  ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -107,6 +103,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  Padding buildSummaryCard({int count, Color color, String text}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Material(
+        borderRadius: BorderRadius.circular(10.0),
+        elevation: 10, 
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Text(
+              text, 
+              style: TextStyle(
+                color: color, 
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              '${formatter.format(count)}',
+              style: TextStyle(
+                color: color, 
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   ExpansionTile buildExpansionTile(Countries item, int index) {
     return ExpansionTile(
             leading: item.countryCode.length == 2 ? CountryPickerUtils.getDefaultFlagImage(
@@ -128,7 +154,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         buildDetailText(color: Colors.orangeAccent, count: index + 1, text: 'Ranks'),
                         // Text('Rank: ${index + 1}', style: TextStyle(color: Colors.orangeAccent),),
                         // SizedBox(height: 10,),
-                        buildDetailText(color: Colors.black, count: item.confirmed, text: 'Confirmed'),
+                        buildDetailText(color: Colors.blue, count: item.active, text: 'Active'),
                         // Text('Confirmed: ${item.confirmed}'),
                         // SizedBox(height: 10,),
                         buildDetailText(color: Colors.green, count: item.recovered, text: 'Recovered'),
