@@ -1,5 +1,6 @@
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
+import 'package:covid19_tracker/model/countries.dart';
 import 'package:covid19_tracker/model/covid19_dashboard.dart';
 import 'package:covid19_tracker/services/networking.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 // import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:country_pickers/country.dart';
+import 'package:intl/intl.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key key}) : super(key: key);
@@ -42,19 +44,78 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
       body: data == null 
         ? Center(child: CircularProgressIndicator()) 
-        : ListView.builder(
-        
-          itemCount: data.countries.length,
-          itemBuilder: (context, index){
-        
-          return ExpansionTile(
-            leading: data.countries[index].countryCode.length == 2 ? CountryPickerUtils.getDefaultFlagImage(
-              Country(isoCode: data.countries[index].countryCode)
+        : RefreshIndicator(
+            onRefresh: getData,
+            child: 
+
+            CustomScrollView(
+              slivers: <Widget>[
+                SliverGrid(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Material(
+                        borderRadius: BorderRadius.circular(20.0),
+                        elevation: 10, 
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Text(
+                              'Title', 
+                              style: TextStyle(
+                                color: Colors.black, 
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '1000',
+                              style: TextStyle(
+                                color: Colors.black, 
+                                fontWeight: FontWeight.bold,
+                                fontSize: 22,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]), 
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      var item = data.countries[index];
+                      return buildExpansionTile(item, index);
+                    },
+                    childCount: data.countries.length,
+                  ),
+                ),
+              ],
+            ),
+            
+          //   ListView.builder(
+          
+          //   itemCount: data.countries.length,
+          //   itemBuilder: (context, index){
+
+          //     var item = data.countries[index];
+          
+          //   return buildExpansionTile(item, index);
+          // }),
+        ),
+    );
+  }
+
+  ExpansionTile buildExpansionTile(Countries item, int index) {
+    return ExpansionTile(
+            leading: item.countryCode.length == 2 ? CountryPickerUtils.getDefaultFlagImage(
+              Country(isoCode: item.countryCode)
             ) : Text(''),
             
             // Text('${data.countries[index].countryCode}'),
-            title: Text('${data.countries[index].country}'),
-            trailing: Text('${data.countries[index].confirmed}'),
+            title: Text('${item.country}'),
+            trailing: Text('${formatter.format(item.confirmed)}'),
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -64,14 +125,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('Rank: ${index + 1}', style: TextStyle(color: Colors.orangeAccent),),
-                        SizedBox(height: 10,),
-                        Text('Confirmed: ${data.countries[index].confirmed}'),
-                        SizedBox(height: 10,),
-                        Text('Recovered: ${data.countries[index].recovered}', style: TextStyle(color: Colors.green),),
-                        SizedBox(height: 10,),
-                        Text('Deaths: ${data.countries[index].deaths}', style: TextStyle(color: Colors.red),),
-                        SizedBox(height: 10,),
+                        buildDetailText(color: Colors.orangeAccent, count: index + 1, text: 'Ranks'),
+                        // Text('Rank: ${index + 1}', style: TextStyle(color: Colors.orangeAccent),),
+                        // SizedBox(height: 10,),
+                        buildDetailText(color: Colors.black, count: item.confirmed, text: 'Confirmed'),
+                        // Text('Confirmed: ${item.confirmed}'),
+                        // SizedBox(height: 10,),
+                        buildDetailText(color: Colors.green, count: item.recovered, text: 'Recovered'),
+                        
+                        buildDetailText(color: Colors.red, count: item.deaths, text: 'Deaths'),
+                        // Text('Deaths: ${item.deaths}', style: TextStyle(color: Colors.red),),
+                        // SizedBox(height: 10,),
                       ],
                     ),
                   ],
@@ -79,11 +143,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ],
           );
-        }),
-    );
   }
 
-  getData() async {
+  Widget buildDetailText({int count, Color color, String text}) => Padding(
+    padding: const EdgeInsets.symmetric(vertical: 10.0),
+    child: Text(
+      '$text: ${formatter.format(count)}', 
+      style: TextStyle(color: color),
+    ),
+  );
+
+  Future<void> getData() async {
     Networking network = Networking();
     Covid19Dashboard result = await network.getDashboardData();
     setState(() {
@@ -91,4 +161,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     });
     // return result;
   }
+
+  final formatter = NumberFormat.decimalPattern('en-US');
+
+  
 }
