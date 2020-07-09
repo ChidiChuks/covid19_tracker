@@ -17,14 +17,20 @@ class DashboardScreen extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProviderStateMixin {
   Covid19Dashboard data;
+
+  AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
 
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 5000),);
+
     getData();
+
+    // _controller.forward();
   }
 
   @override
@@ -50,20 +56,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             CustomScrollView(
               slivers: <Widget>[
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Center(child: Text('Global Update on Covid-19', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27,),)),
+                    ),
+                  ]),
+                ),
                 SliverGrid(
                   delegate: SliverChildListDelegate([
                     buildSummaryCard(
-                      text: 'Confirmed', 
+                      text: 'Confirmed Cases', 
                       color: Colors.black54, 
                       count: data.confirmed,
+                      
                     ),
                     buildSummaryCard(
-                      text: 'Active', 
+                      text: 'Active Cases', 
                       color: Colors.blue, 
                       count: data.active,
                     ),
                     buildSummaryCard(
-                      text: 'Recovered', 
+                      text: 'Recovered Cases', 
                       color: Colors.green, 
                       count: data.recovered,
                     ),
@@ -77,6 +92,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     crossAxisCount: 2,
                     childAspectRatio: 1.3,
                   ),
+                ),
+              
+                SliverList(
+                  delegate: SliverChildListDelegate([
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Center(
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              'Results\' date: ${data.date}', 
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                            ),
+                            SizedBox(height: 15.0),
+                            Text(
+                              'Update per Country', 
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23,),
+                            ),
+                            SizedBox(height: 5.0),
+                            Text(
+                              'Click on any country of your choice to view more...', 
+                              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -103,31 +146,37 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Padding buildSummaryCard({int count, Color color, String text}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Material(
-        borderRadius: BorderRadius.circular(10.0),
-        elevation: 10, 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Text(
-              text, 
-              style: TextStyle(
-                color: color, 
-                fontWeight: FontWeight.bold,
+  Widget buildSummaryCard({int count, Color color, String text}) {
+    return ScaleTransition(
+      scale: Tween<double>(
+        begin: 0, 
+        end: 1,
+      ).animate(_controller),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Material(
+          borderRadius: BorderRadius.circular(10.0),
+          elevation: 10, 
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Text(
+                text, 
+                style: TextStyle(
+                  color: color, 
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            Text(
-              '${formatter.format(count)}',
-              style: TextStyle(
-                color: color, 
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+              Text(
+                '${formatter.format(count)}',
+                style: TextStyle(
+                  color: color, 
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -184,8 +233,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Covid19Dashboard result = await network.getDashboardData();
     setState(() {
       data = result;
+
+      if(data != null) {
+        _controller.reset();
+        _controller.forward();
+      }
     });
     // return result;
+    
   }
 
   final formatter = NumberFormat.decimalPattern('en-US');
