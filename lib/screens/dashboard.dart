@@ -21,12 +21,18 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   Covid19Dashboard data;
 
   AnimationController _controller;
+  Animation _curvedAnimation;
 
   @override
   void initState() {
     super.initState();
 
     _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 5000),);
+
+    _curvedAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.bounceOut,
+    );
 
     getData();
 
@@ -151,7 +157,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
       scale: Tween<double>(
         begin: 0, 
         end: 1,
-      ).animate(_controller),
+      ).animate(_curvedAnimation),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Material(
