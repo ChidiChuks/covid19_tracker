@@ -2,7 +2,9 @@ import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';
 import 'package:covid19_tracker/model/countries.dart';
 import 'package:covid19_tracker/model/covid19_dashboard.dart';
+import 'package:covid19_tracker/screens/country_screen.dart';
 import 'package:covid19_tracker/services/networking.dart';
+import 'package:covid19_tracker/services/search_delegate.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:country_code_picker/country_code_picker.dart';
@@ -19,6 +21,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProviderStateMixin {
   Covid19Dashboard data;
+  List<Covid19Dashboard> dataHistory;
 
   AnimationController _controller;
   Animation _curvedAnimation;
@@ -26,6 +29,8 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   @override
   void initState() {
     super.initState();
+
+    dataHistory = [];
 
     _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 5000),);
 
@@ -53,6 +58,19 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     return Scaffold(
       appBar: AppBar(
         title: Text('COVID-19 Dashboard'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search), 
+            onPressed: () {
+              showSearch(
+                context: context, 
+                delegate: OurSearchDelegate(
+                  countriesList: data.countries.toList(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: data == null 
         ? Center(child: CircularProgressIndicator()) 
@@ -66,7 +84,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                   delegate: SliverChildListDelegate([
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Center(child: Text('Global Update on Covid-19', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 27,),)),
+                      child: Center(child: Text('Global Update on Covid-19', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21,),)),
                     ),
                   ]),
                 ),
@@ -74,23 +92,27 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                   delegate: SliverChildListDelegate([
                     buildSummaryCard(
                       text: 'Confirmed Cases', 
-                      color: Colors.black54, 
+                      // color: Colors.black54, 
+                      color: Colors.white, 
                       count: data.confirmed,
                       
                     ),
                     buildSummaryCard(
                       text: 'Active Cases', 
-                      color: Colors.blue, 
+                      // color: Colors.blue, 
+                      color: Colors.yellow, 
                       count: data.active,
                     ),
                     buildSummaryCard(
                       text: 'Recovered Cases', 
-                      color: Colors.green, 
+                      // color: Colors.green, 
+                      color: Colors.blue[100], 
                       count: data.recovered,
                     ),
                     buildSummaryCard(
                       text: 'Deaths', 
-                      color: Colors.red, 
+                      // color: Colors.red, 
+                      color: Colors.red[100], 
                       count: data.deaths,
                     ),
                   ]), 
@@ -112,11 +134,11 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                               style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
                             ),
                             SizedBox(height: 15.0),
-                            Text(
-                              'Update per Country', 
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23,),
-                            ),
-                            SizedBox(height: 5.0),
+                            // Text(
+                            //   'Update per Country', 
+                            //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 23,),
+                            // ),
+                            // SizedBox(height: 5.0),
                             Text(
                               'Click on any country of your choice to view more...', 
                               style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
@@ -163,6 +185,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
         child: Material(
           borderRadius: BorderRadius.circular(10.0),
           elevation: 10, 
+          color: Colors.deepPurple,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -188,8 +211,8 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     );
   }
 
-  ExpansionTile buildExpansionTile(Countries item, int index) {
-    return ExpansionTile(
+  ListTile buildExpansionTile(Countries item, int index) {
+    return ListTile(
             leading: item.countryCode.length == 2 ? CountryPickerUtils.getDefaultFlagImage(
               Country(isoCode: item.countryCode)
             ) : Text(''),
@@ -197,32 +220,39 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
             // Text('${data.countries[index].countryCode}'),
             title: Text('${item.country}'),
             trailing: Text('${formatter.format(item.confirmed)}'),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        buildDetailText(color: Colors.orangeAccent, count: index + 1, text: 'Ranks'),
-                        // Text('Rank: ${index + 1}', style: TextStyle(color: Colors.orangeAccent),),
-                        // SizedBox(height: 10,),
-                        buildDetailText(color: Colors.blue, count: item.active, text: 'Active'),
-                        // Text('Confirmed: ${item.confirmed}'),
-                        // SizedBox(height: 10,),
-                        buildDetailText(color: Colors.green, count: item.recovered, text: 'Recovered'),
-                        
-                        buildDetailText(color: Colors.red, count: item.deaths, text: 'Deaths'),
-                        // Text('Deaths: ${item.deaths}', style: TextStyle(color: Colors.red),),
-                        // SizedBox(height: 10,),
-                      ],
-                    ),
-                  ],
-                ),
+
+            onTap: () => Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder: (context) => CountryScreen(country: item),
               ),
-            ],
+            ), 
+            // children: <Widget>[
+            //   Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       children: <Widget>[
+            //         Column(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: <Widget>[
+            //             buildDetailText(color: Colors.orangeAccent, count: index + 1, text: 'Ranks'),
+            //             // Text('Rank: ${index + 1}', style: TextStyle(color: Colors.orangeAccent),),
+            //             // SizedBox(height: 10,),
+            //             buildDetailText(color: Colors.blue, count: item.active, text: 'Active'),
+            //             // Text('Confirmed: ${item.confirmed}'),
+            //             // SizedBox(height: 10,),
+            //             buildDetailText(color: Colors.green, count: item.recovered, text: 'Recovered'),
+                        
+            //             buildDetailText(color: Colors.red, count: item.deaths, text: 'Deaths'),
+            //             // Text('Deaths: ${item.deaths}', style: TextStyle(color: Colors.red),),
+            //             // SizedBox(height: 10,),
+            //           ],
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ],
           );
   }
 
@@ -237,9 +267,11 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   Future<void> getData() async {
     Networking network = Networking();
     Covid19Dashboard result = await network.getDashboardData();
+    var resultHistory = await network.getDashboardHistoryData();
     setState(() {
       data = result;
-
+      dataHistory = resultHistory;
+      print(dataHistory);
       if(data != null) {
         _controller.reset();
         _controller.forward();
@@ -250,6 +282,5 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   }
 
   final formatter = NumberFormat.decimalPattern('en-US');
-
   
 }

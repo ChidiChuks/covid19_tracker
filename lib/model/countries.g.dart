@@ -17,46 +17,85 @@ class _$CountriesSerializer implements StructuredSerializer<Countries> {
   @override
   Iterable<Object> serialize(Serializers serializers, Countries object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'country',
-      serializers.serialize(object.country,
-          specifiedType: const FullType(String)),
-      'countryCode',
-      serializers.serialize(object.countryCode,
-          specifiedType: const FullType(String)),
-      'latitude',
-      serializers.serialize(object.latitude,
-          specifiedType: const FullType(double)),
-      'longitude',
-      serializers.serialize(object.longitude,
-          specifiedType: const FullType(double)),
-      'confirmed',
-      serializers.serialize(object.confirmed,
-          specifiedType: const FullType(int)),
-      'deaths',
-      serializers.serialize(object.deaths, specifiedType: const FullType(int)),
-      'recovered',
-      serializers.serialize(object.recovered,
-          specifiedType: const FullType(int)),
-      'active',
-      serializers.serialize(object.active, specifiedType: const FullType(int)),
-      'updatedAt',
-      serializers.serialize(object.updatedAt,
-          specifiedType: const FullType(String)),
-      'deltaConfirmed',
-      serializers.serialize(object.deltaConfirmed,
-          specifiedType: const FullType(int)),
-      'deltaDeaths',
-      serializers.serialize(object.deltaDeaths,
-          specifiedType: const FullType(int)),
-      'deltaRecovered',
-      serializers.serialize(object.deltaRecovered,
-          specifiedType: const FullType(int)),
-      'deltaActive',
-      serializers.serialize(object.deltaActive,
-          specifiedType: const FullType(int)),
-    ];
-
+    final result = <Object>[];
+    if (object.country != null) {
+      result
+        ..add('country')
+        ..add(serializers.serialize(object.country,
+            specifiedType: const FullType(String)));
+    }
+    if (object.countryCode != null) {
+      result
+        ..add('countryCode')
+        ..add(serializers.serialize(object.countryCode,
+            specifiedType: const FullType(String)));
+    }
+    if (object.latitude != null) {
+      result
+        ..add('latitude')
+        ..add(serializers.serialize(object.latitude,
+            specifiedType: const FullType(double)));
+    }
+    if (object.longitude != null) {
+      result
+        ..add('longitude')
+        ..add(serializers.serialize(object.longitude,
+            specifiedType: const FullType(double)));
+    }
+    if (object.confirmed != null) {
+      result
+        ..add('confirmed')
+        ..add(serializers.serialize(object.confirmed,
+            specifiedType: const FullType(int)));
+    }
+    if (object.deaths != null) {
+      result
+        ..add('deaths')
+        ..add(serializers.serialize(object.deaths,
+            specifiedType: const FullType(int)));
+    }
+    if (object.recovered != null) {
+      result
+        ..add('recovered')
+        ..add(serializers.serialize(object.recovered,
+            specifiedType: const FullType(int)));
+    }
+    if (object.active != null) {
+      result
+        ..add('active')
+        ..add(serializers.serialize(object.active,
+            specifiedType: const FullType(int)));
+    }
+    if (object.updatedAt != null) {
+      result
+        ..add('updatedAt')
+        ..add(serializers.serialize(object.updatedAt,
+            specifiedType: const FullType(String)));
+    }
+    if (object.deltaConfirmed != null) {
+      result
+        ..add('deltaConfirmed')
+        ..add(serializers.serialize(object.deltaConfirmed,
+            specifiedType: const FullType(int)));
+    }
+    if (object.deltaDeaths != null) {
+      result
+        ..add('deltaDeaths')
+        ..add(serializers.serialize(object.deltaDeaths,
+            specifiedType: const FullType(int)));
+    }
+    if (object.deltaRecovered != null) {
+      result
+        ..add('deltaRecovered')
+        ..add(serializers.serialize(object.deltaRecovered,
+            specifiedType: const FullType(int)));
+    }
+    if (object.deltaActive != null) {
+      result
+        ..add('deltaActive')
+        ..add(serializers.serialize(object.deltaActive,
+            specifiedType: const FullType(int)));
+    }
     return result;
   }
 
@@ -175,47 +214,7 @@ class _$Countries extends Countries {
       this.deltaDeaths,
       this.deltaRecovered,
       this.deltaActive})
-      : super._() {
-    if (country == null) {
-      throw new BuiltValueNullFieldError('Countries', 'country');
-    }
-    if (countryCode == null) {
-      throw new BuiltValueNullFieldError('Countries', 'countryCode');
-    }
-    if (latitude == null) {
-      throw new BuiltValueNullFieldError('Countries', 'latitude');
-    }
-    if (longitude == null) {
-      throw new BuiltValueNullFieldError('Countries', 'longitude');
-    }
-    if (confirmed == null) {
-      throw new BuiltValueNullFieldError('Countries', 'confirmed');
-    }
-    if (deaths == null) {
-      throw new BuiltValueNullFieldError('Countries', 'deaths');
-    }
-    if (recovered == null) {
-      throw new BuiltValueNullFieldError('Countries', 'recovered');
-    }
-    if (active == null) {
-      throw new BuiltValueNullFieldError('Countries', 'active');
-    }
-    if (updatedAt == null) {
-      throw new BuiltValueNullFieldError('Countries', 'updatedAt');
-    }
-    if (deltaConfirmed == null) {
-      throw new BuiltValueNullFieldError('Countries', 'deltaConfirmed');
-    }
-    if (deltaDeaths == null) {
-      throw new BuiltValueNullFieldError('Countries', 'deltaDeaths');
-    }
-    if (deltaRecovered == null) {
-      throw new BuiltValueNullFieldError('Countries', 'deltaRecovered');
-    }
-    if (deltaActive == null) {
-      throw new BuiltValueNullFieldError('Countries', 'deltaActive');
-    }
-  }
+      : super._();
 
   @override
   Countries rebuild(void Function(CountriesBuilder) updates) =>

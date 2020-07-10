@@ -14,30 +14,43 @@ abstract class Countries implements Built<Countries, CountriesBuilder> {
 
   factory Countries([updates(CountriesBuilder b)]) = _$Countries;
 
+  @nullable
   @BuiltValueField(wireName: 'country')
   String get country;
+  @nullable
   @BuiltValueField(wireName: 'countryCode')
   String get countryCode;
+  @nullable
   @BuiltValueField(wireName: 'latitude')
   double get latitude;
+  @nullable
   @BuiltValueField(wireName: 'longitude')
   double get longitude;
+  @nullable
   @BuiltValueField(wireName: 'confirmed')
   int get confirmed;
+  @nullable
   @BuiltValueField(wireName: 'deaths')
   int get deaths;
+  @nullable
   @BuiltValueField(wireName: 'recovered')
   int get recovered;
+  @nullable
   @BuiltValueField(wireName: 'active')
   int get active;
+  @nullable
   @BuiltValueField(wireName: 'updatedAt')
   String get updatedAt;
+  @nullable
   @BuiltValueField(wireName: 'deltaConfirmed')
   int get deltaConfirmed;
+  @nullable
   @BuiltValueField(wireName: 'deltaDeaths')
   int get deltaDeaths;
+  @nullable
   @BuiltValueField(wireName: 'deltaRecovered')
   int get deltaRecovered;
+  @nullable
   @BuiltValueField(wireName: 'deltaActive')
   int get deltaActive;
   String toJson() {
