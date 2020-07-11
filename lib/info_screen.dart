@@ -1,4 +1,5 @@
 import 'package:covid19_tracker/constant.dart';
+import 'package:covid19_tracker/screens/dashboard.dart';
 import 'package:covid19_tracker/widgets/my_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -49,9 +50,23 @@ class _InfoScreenState extends State<InfoScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ButtonBar(
-
+                  RaisedButton(
+                    color: Colors.blue,
+                    elevation: 10,
+                    // clipBehavior: Clip.hardEdge,
+                    child: Text("Covid-19 Dashboard", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18,),),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return DashboardScreen();
+                          },
+                        ),
+                      );
+                    },
                   ),
+                  SizedBox(height: 15.0,),
                   Text(
                     "Symptoms",
                     style: kTitleTextstyle,

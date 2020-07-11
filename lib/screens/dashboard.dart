@@ -87,7 +87,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                   delegate: SliverChildListDelegate([
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 20.0),
-                      child: Center(child: Text('Global Update on Covid-19', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21,),)),
+                      child: Center(child: Text('Global Update on Covid-19', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 15,),)),
                     ),
                   ]),
                 ),
@@ -134,7 +134,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                           children: <Widget>[
                             Text(
                               'Results\' date: ${data.date}', 
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54),
+                              style: TextStyle(fontWeight: FontWeight.w500, color: Colors.black54),
                             ),
                             SizedBox(height: 15.0),
                             // Text(
@@ -144,7 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                             // SizedBox(height: 5.0),
                             Text(
                               'Click on any country of your choice to view more...', 
-                              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 12),
+                              style: TextStyle(fontStyle: FontStyle.italic, fontSize: 7.7),
                             ),
                           ],
                         ),
