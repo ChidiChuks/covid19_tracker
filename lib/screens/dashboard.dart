@@ -271,7 +271,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     setState(() {
       data = result;
       dataHistory = resultHistory;
-      print(dataHistory);
+      // print(dataHistory);
       if(data != null) {
         _controller.reset();
         _controller.forward();

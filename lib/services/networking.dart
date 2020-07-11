@@ -34,13 +34,10 @@ class Networking {
 
     if(response.statusCode == 200) {
       List<dynamic> list = jsonDecode(response.body);
-      _dashboardHistoryResult.addAll(
-        list.map((item) => serializers.deserializeWith(
-          Covid19Dashboard.serializer, item),
-        ),
-      ); 
+      _dashboardHistoryResult.addAll(list.map((item) => serializers.deserializeWith(
+          Covid19Dashboard.serializer, item))); 
     } else{
-      throw Exception('connection error');
+      // throw Exception('connection error');
     }
 
     return _dashboardHistoryResult;

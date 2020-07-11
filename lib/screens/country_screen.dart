@@ -16,13 +16,14 @@ class CountryScreen extends StatelessWidget {
         title: Text('${country.country} info.'),
       ),
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0,),
             child: Image.network(
-              'https://www.countryflags.io/${country.countryCode}/flat/64.png',
-              width: MediaQuery.of(context).size.width / 4, 
+              "https://www.countryflags.io/${country.countryCode}/flat/64.png",
+              // scale: 1.0,
+              width: MediaQuery.of(context).size.width / 2, 
               fit: BoxFit.fill,
             ),
           ),
@@ -35,7 +36,7 @@ class CountryScreen extends StatelessWidget {
             child: SfCartesianChart(
               primaryXAxis: CategoryAxis(),
               // Chart title
-              title: ChartTitle(text: 'Half yearly sales analysis'),
+              title: ChartTitle(text: 'Half yearly analysis'),
               // Enable legend
               legend: Legend(isVisible: true),
               // Enable tooltip
