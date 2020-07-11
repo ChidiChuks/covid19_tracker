@@ -5,6 +5,7 @@ import 'package:covid19_tracker/model/covid19_dashboard.dart';
 import 'package:covid19_tracker/screens/country_screen.dart';
 import 'package:covid19_tracker/services/networking.dart';
 import 'package:covid19_tracker/services/search_delegate.dart';
+import 'package:covid19_tracker/widgets/my_header.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:country_code_picker/country_code_picker.dart';
@@ -56,8 +57,10 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
 
     return Scaffold(
+      
       appBar: AppBar(
         title: Text('COVID-19 Dashboard'),
+        // appBarTheme: AppBarTheme(color: Colors.blue[900]),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search), 
@@ -92,27 +95,27 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                   delegate: SliverChildListDelegate([
                     buildSummaryCard(
                       text: 'Confirmed Cases', 
-                      // color: Colors.black54, 
-                      color: Colors.white, 
+                      color: Colors.orangeAccent, 
+                      // color: Colors.white, 
                       count: data.confirmed,
                       
                     ),
                     buildSummaryCard(
                       text: 'Active Cases', 
-                      // color: Colors.blue, 
-                      color: Colors.yellow, 
+                      color: Colors.blue, 
+                      // color: Colors.white, 
                       count: data.active,
                     ),
                     buildSummaryCard(
                       text: 'Recovered Cases', 
-                      // color: Colors.green, 
-                      color: Colors.blue[100], 
+                      color: Colors.green, 
+                      // color: Colors.white, 
                       count: data.recovered,
                     ),
                     buildSummaryCard(
                       text: 'Deaths', 
-                      // color: Colors.red, 
-                      color: Colors.red[100], 
+                      color: Colors.red, 
+                      // color: Colors.white, 
                       count: data.deaths,
                     ),
                   ]), 
@@ -181,27 +184,28 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
         end: 1,
       ).animate(_curvedAnimation),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15.0),
         child: Material(
           borderRadius: BorderRadius.circular(10.0),
           elevation: 10, 
-          color: Colors.deepPurple,
+          color: Colors.white,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
                 text, 
                 style: TextStyle(
                   color: color, 
                   fontWeight: FontWeight.bold,
+                  fontSize: 12,
                 ),
               ),
               Text(
                 '${formatter.format(count)}',
                 style: TextStyle(
                   color: color, 
-                  fontWeight: FontWeight.bold,
-                  fontSize: 22,
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 23,
                 ),
               ),
             ],
