@@ -1,19 +1,27 @@
 import 'package:covid19_tracker/model/countries.dart';
+import 'package:covid19_tracker/model/covid19_dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_core/core.dart';
 
-class CountryScreen extends StatelessWidget {
+class CountryScreen extends StatefulWidget {
   final Countries country;
-  
+
   CountryScreen({Key key, this.country}) : super(key: key);
+
+  @override
+  _CountryScreenState createState() => _CountryScreenState();
+}
+
+class _CountryScreenState extends State<CountryScreen> {
+  final List<Covid19Dashboard> historyData = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${country.country} info.'),
+        title: Text('${widget.country.country} info.'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -22,7 +30,7 @@ class CountryScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0,),
               child: Image.network(
-                "https://www.countryflags.io/${country.countryCode}/flat/64.png",
+                "https://www.countryflags.io/${widget.country.countryCode}/flat/64.png",
                 // scale: 1.0,
                 width: MediaQuery.of(context).size.width / 3, 
                 fit: BoxFit.fill,
@@ -30,6 +38,16 @@ class CountryScreen extends StatelessWidget {
             ),
 
             SizedBox(height: 10),
+            
+            // buildDetailText(color: Colors.orangeAccent, count: index + 1, text: 'Ranks'),
+
+            buildDetailText(color: Colors.orangeAccent, count: widget.country.confirmed, text: 'Confirmed'),
+                            
+            buildDetailText(color: Colors.blue, count: widget.country.active, text: 'Active'),
+            
+            buildDetailText(color: Colors.green, count: widget.country.recovered, text: 'Recovered'),
+            
+            buildDetailText(color: Colors.red, count: widget.country.deaths, text: 'Deaths'),
 
             Container(
               width: MediaQuery.of(context).size.width - 10,
@@ -42,31 +60,22 @@ class CountryScreen extends StatelessWidget {
                 legend: Legend(isVisible: true),
                 // Enable tooltip
                 tooltipBehavior: TooltipBehavior(enable: true),
-                series: <ChartSeries<SalesData, String>>[
-                  LineSeries<SalesData, String>(
-                      dataSource: <SalesData>[
-                        SalesData('Jan', 35),
-                        SalesData('Feb', 28),
-                        SalesData('Mar', 34),
-                        SalesData('Apr', 32),
-                        SalesData('May', 40)
+                series: <ChartSeries<ChartItem, String>>[
+                  LineSeries<ChartItem, String>(
+                      dataSource: <ChartItem>[
+                        ChartItem('Jan', 35),
+                        ChartItem('Feb', 28),
+                        ChartItem('Mar', 34),
+                        ChartItem('Apr', 32),
+                        ChartItem('May', 40)
                       ],
-                      xValueMapper: (SalesData sales, _) => sales.year,
-                      yValueMapper: (SalesData sales, _) => sales.sales,
+                      xValueMapper: (ChartItem sales, _) => sales.date,
+                      yValueMapper: (ChartItem sales, _) => sales.count,
                       // Enable data label
                       dataLabelSettings: DataLabelSettings(isVisible: true))
                 ]),
             ),
 
-            // buildDetailText(color: Colors.orangeAccent, count: index + 1, text: 'Ranks'),
-
-            buildDetailText(color: Colors.orangeAccent, count: country.confirmed, text: 'Confirmed'),
-                            
-            buildDetailText(color: Colors.blue, count: country.active, text: 'Active'),
-            
-            buildDetailText(color: Colors.green, count: country.recovered, text: 'Recovered'),
-            
-            buildDetailText(color: Colors.red, count: country.deaths, text: 'Deaths'),
           ],
         ),
       ),
@@ -84,9 +93,9 @@ class CountryScreen extends StatelessWidget {
   final formatter = NumberFormat.decimalPattern('en-US');
 }
 
-class SalesData {
-  SalesData(this.year, this.sales);
+class ChartItem {
+  ChartItem(this.date, this.count);
 
-  final String year;
-  final double sales;
+  final String date;
+  final int count;
 }
