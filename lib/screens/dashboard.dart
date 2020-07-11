@@ -267,7 +267,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   Future<void> getData() async {
     Networking network = Networking();
     Covid19Dashboard result = await network.getDashboardData();
-    var resultHistory = await network.getDashboardHistoryData();
+    List<Covid19Dashboard> resultHistory = await network.getDashboardHistoryData();
     setState(() {
       data = result;
       dataHistory = resultHistory;

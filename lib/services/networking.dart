@@ -36,7 +36,7 @@ class Networking {
       List<dynamic> list = jsonDecode(response.body);
       _dashboardHistoryResult.addAll(
         list.map((item) => serializers.deserializeWith(
-          Covid19Dashboard.serializer, list),
+          Covid19Dashboard.serializer, item),
         ),
       ); 
     } else{
