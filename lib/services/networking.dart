@@ -27,8 +27,8 @@ class Networking {
 
     List<Covid19Dashboard> _dashboardHistoryResult = [];
 
-    var url = 'https://doh.saal.ai/api/live';
-    // var url = 'https://ksanj.github.io/json/covid-19/history.json';
+    // var url = 'https://doh.saal.ai/api/live';
+    var url = 'https://ksanj.github.io/json/covid-19/history.json';
 
     var response = await http.get(url);
 
