@@ -99,13 +99,13 @@ class _InfoScreenState extends State<InfoScreen> {
                   SizedBox(height: 20),
                   PreventCard(
                     text:
-                        "Since the start of the coronavirus outbreak some places have fully embraced wearing facemasks",
+                        "Since the start of the coronavirus outbreak some places have fully embraced \n wearing facemasks",
                     image: "assets/images/wear_mask.png",
                     title: "Wear face mask",
                   ),
                   PreventCard(
                     text:
-                        "Since the start of the coronavirus outbreak some places have fully embraced wearing facemasks",
+                        "Since the start of the coronavirus outbreak some places have fully embraced \n wearing facemasks",
                     image: "assets/images/wash_hands.png",
                     title: "Wash your hands",
                   ),
@@ -141,7 +141,7 @@ class PreventCard extends StatelessWidget {
           alignment: Alignment.centerLeft,
           children: <Widget>[
             Container(
-              height: 136,
+              height: 150,
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
